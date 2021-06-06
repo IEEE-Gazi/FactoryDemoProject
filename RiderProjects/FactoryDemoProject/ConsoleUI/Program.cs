@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Business.Concrete;
 using DataAccess.Abstract;
 using DataAccess.Concrete;
 using DataAccess.Concrete.EntityFramework;
@@ -12,20 +13,24 @@ namespace ConsoleUI
     {
         static void Main(string[] args)
         {
-            /* Metodları sırayla yorumdan çıkararak çalıştırın, her bir sonraki satırı çalıştırdığınız zaman
-               önce çalıştırmış olduğunuz metodu tekrardan yorum satırına alarak veritabanı üzerindeki 
-               değişimleri gözlemleyin.
-            */
-            
-            //CreateDatabase();
-            //AddCategoryAndOrder();
-            //AddProduct1();
-            //AddProduct2();
-            //GetAndUpdate();
-            //DeleteProduct();
-            //AddMultipleProducts();
-            //GetAll();
-            //FilteredGetSumAll();
+            ManagerOperations();
+
+            // ProductManager productManager = new ProductManager(new EfProductDal());
+            // foreach (var exceedProduct in productManager.GetAllExceedProducts())
+            // {
+            //     Console.WriteLine(exceedProduct.ProductName);
+            // }
+        }
+        private static void ManagerOperations()
+        {
+            CategoryManager categoryManager = new CategoryManager(new EfCategoryDal());
+            Category category = categoryManager.Get(Guid.Parse("124B69D0-E679-4920-A9E1-DEEFDF8BF660"));
+
+            ProductManager productManager = new ProductManager(new EfProductDal());
+            productManager.Add(new Product
+            {
+                CategoryId = category.Id, ProductName = "Greyfurt", UnitsInStock = 40
+            });
         }
 
         private static void AddProduct1()
